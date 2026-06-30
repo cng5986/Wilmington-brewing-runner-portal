@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <?!= include('Styles'); ?>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="badge">WB</div>
+      <div>
+        <h1>Wilmington Brewing Runner Portal</h1>
+        <p>Wilmington Brewing Co. Run Club</p>
+      </div>
+    </div>
+    <nav>
+      <button onclick="showPage('register')">Register</button>
+      <button onclick="showPage('member')">Member</button>
+      <button onclick="showPage('volunteer')">Volunteer</button>
+      <button onclick="showPage('admin')">Admin</button>
+    </nav>
+  </header>
+
+  <main>
+    <section id="home" class="card page active">
+      <h2>Earn Fist Bumps every time you run.</h2>
+      <p>Register once, get your personal QR code, and have a volunteer scan it at each run.</p>
+      <button class="primary" onclick="showPage('register')">Join the Run Club</button>
+    </section>
+
+    <section id="register" class="card page">
+      <h2>Member Registration</h2>
+      <form id="registerForm">
+        <div class="grid two">
+          <label>First Name<input name="firstName" required></label>
+          <label>Last Name<input name="lastName" required></label>
+          <label>Email<input name="email" type="email" required></label>
+          <label>Phone<input name="phone"></label>
+          <label>Shirt Size<select name="shirtSize"><option></option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>Prefer not to say</option></select></label>
+          <label>Emergency Contact Name<input name="emergencyName"></label>
+          <label>Emergency Contact Phone<input name="emergencyPhone"></label>
+        </div>
+        <div class="waiver" id="waiverText">Loading waiver...</div>
+        <label class="check"><input type="checkbox" name="waiverAccepted" required> I have read and agree to the waiver above.</label>
+        <button class="primary" type="submit">Register</button>
+      </form>
+      <div id="registerResult"></div>
+    </section>
+
+    <section id="member" class="card page">
+      <h2>Member Dashboard</h2>
+      <label>Runner ID or Email<input id="memberLookup" placeholder="WBRC-0001"></label>
+      <button class="primary" onclick="lookup()">Look Up</button>
+      <div id="memberResult"></div>
+    </section>
+
+    <section id="volunteer" class="card page">
+      <h2>Volunteer Check-In</h2>
+      <p>Scan the runner QR code, or type the Runner ID below.</p>
+      <label>Runner ID<input id="checkRunnerId" placeholder="WBRC-0001"></label>
+      <label>Notes<input id="checkNotes"></label>
+      <button class="primary" onclick="checkIn()">Confirm Check-In</button>
+      <div id="checkResult"></div>
+    </section>
+
+    <section id="admin" class="card page">
+      <h2>Admin</h2>
+      <div class="grid two">
+        <label>Event Name<input id="eventName" value="Weekly Run"></label>
+        <label>Location<input id="eventLocation" value="Wilmington Brewing Company"></label>
+      </div>
+      <label>Notes<input id="eventNotes"></label>
+      <button class="primary" onclick="createEvent()">Create Active Event</button>
+      <button onclick="loadStats()">Refresh Stats</button>
+      <div id="adminResult"></div>
+    </section>
+  </main>
+  <?!= include('JavaScript'); ?>
+</body>
+</html>
