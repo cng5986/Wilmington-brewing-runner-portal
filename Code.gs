@@ -124,3 +124,66 @@ function getDatabase_() {
   }
   return SpreadsheetApp.openById(id);
 }
+function doGet() {
+  return HtmlService
+    .createTemplateFromFile('Index')
+    .evaluate()
+    .setTitle('Wilmington Brewing Runner Portal')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
+
+function registerMember(data) {
+  if (!data.firstName || !data.lastName || !data.email || !data.waiverAccepted) {
+    throw new Error('Missing required registration fields.');
+  }
+
+  const ss = getDatabase_();
+  const members = ss.getSheetByName('Members');
+
+  const existingEmails = members.getRange('D2:D').getValues().flat();
+  if (existingEmails.includes(data.email)) {
+    throw new Error('This email is already registered.');
+  }
+
+  const nextRow = members.getLastRow() + 1;
+  const runnerId = 'WBRC-' + String(nextRow - 1).padStart(4, '0');
+  const qrCodeUrl = 'https://quickchart.io/qr?text=' + encodeURIComponent(runnerId) + '&size=300';
+
+  members.appendRow([
+    runnerId,
+    data.firstName,
+    data.lastName,
+    data.email,
+    data.phone || '',
+    data.shirtSize || '',
+    data.emergencyName || '',
+    data.emergencyPhone || '',
+    'Yes',
+    new Date(),
+    new Date(),
+    0,
+    qrCodeUrl,
+    'Active',
+    ''
+  ]);
+
+  return {
+    runnerId: runnerId,
+    qrCodeUrl: qrCodeUrl
+  };
+}
+function doGet() {
+  return HtmlService
+    .createTemplateFromFile('Index')
+    .evaluate()
+    .setTitle('Wilmington Brewing Runner Portal')
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+}
+
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
