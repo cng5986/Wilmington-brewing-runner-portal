@@ -82,10 +82,17 @@ function getDatabase_() {
   if (!id) throw new Error('No spreadsheet ID found. Run setupPortal first.');
   return SpreadsheetApp.openById(id);
 }
+function include(filename) {
+  return HtmlService.createHtmlOutputFromFile(filename).getContent();
+}
 
-function doGet() {
-  return HtmlService
-    .createTemplateFromFile('Index')
+function doGet(e) {
+  const template = HtmlService.createTemplateFromFile('Index');
+  template.checkinId = e && e.parameter && e.parameter.checkin
+    ? e.parameter.checkin
+    : '';
+
+  return template
     .evaluate()
     .setTitle('Wilmington Brewing Runner Portal')
     .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
@@ -112,7 +119,9 @@ function registerMember(data) {
 
   const runnerNumber = members.getLastRow();
   const runnerId = 'WBRC-' + String(runnerNumber).padStart(4, '0');
-  const qrCodeUrl = 'https://quickchart.io/qr?text=' + encodeURIComponent(runnerId) + '&size=300';
+  const webAppUrl = 'https://script.google.com/macros/s/AKfycbw39le-POb1vpuYYlj9DHSUqk5zO3bscAAd8WSoF3I2ddI0O90uDuXISIK0ShKVrAnX/exec';
+const checkInUrl = webAppUrl + '?checkin=' + encodeURIComponent(runnerId);
+const qrCodeUrl = 'https://quickchart.io/qr?text=' + encodeURIComponent(checkInUrl) + '&size=300';
 
   members.appendRow([
     runnerId,
@@ -131,7 +140,7 @@ function registerMember(data) {
     'Active',
     ''
   ]);
-
+sendWelcomeEmail_(email, data.firstName, data.lastName, runnerId, qrCodeUrl);
   return {
     runnerId,
     qrCodeUrl
@@ -234,4 +243,50 @@ function checkInMember(runnerIdInput, notes) {
   }
 
   throw new Error('Runner ID not found.');
+}
+function sendWelcomeEmail_(email, firstName, lastName, runnerId, qrCodeUrl) {
+  const subject = 'Welcome to Wilmington Brewing Co. Run Club';
+
+  const htmlBody =
+    '<div style="font-family:Arial,sans-serif;background:#f7f5f0;padding:24px;">' +
+      '<div style="max-width:520px;margin:auto;background:#7a263a;color:white;border-radius:20px;padding:28px;text-align:center;">' +
+        '<h2 style="margin-top:0;">Wilmington Brewing Co. Run Club</h2>' +
+        '<h3>Welcome, ' + firstName + '!</h3>' +
+        '<p style="font-size:26px;font-weight:bold;">' + runnerId + '</p>' +
+        '<p>Save this QR code and bring it to every run.</p>' +
+        '<img src="' + qrCodeUrl + '" style="background:white;padding:12px;border-radius:14px;width:220px;">' +
+        '<p style="font-size:18px;"><strong>👊 0 Fist Bumps</strong></p>' +
+        '<p>Next reward: TBD</p>' +
+        '<p>Run • Walk • Jog • Hang Out • Earn Fist Bumps</p>' +
+      '</div>' +
+    '</div>';
+
+  MailApp.sendEmail({
+    to: email,
+    subject: subject,
+    htmlBody: htmlBody
+  });
+}
+function getAdminStats() {
+  const ss = getDatabase_();
+
+  const members = ss.getSheetByName('Members');
+  const attendance = ss.getSheetByName('Attendance');
+
+  const totalMembers = Math.max(members.getLastRow() - 1, 0);
+  const totalCheckIns = Math.max(attendance.getLastRow() - 1, 0);
+
+  let totalFistBumps = 0;
+  if (members.getLastRow() > 1) {
+    const values = members.getRange(2, 12, members.getLastRow() - 1, 1).getValues();
+    totalFistBumps = values.reduce(function(sum, row) {
+      return sum + (Number(row[0]) || 0);
+    }, 0);
+  }
+
+  return {
+    totalMembers,
+    totalCheckIns,
+    totalFistBumps
+  };
 }

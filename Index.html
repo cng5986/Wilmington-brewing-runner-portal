@@ -17,69 +17,101 @@
           <button onclick="showRegister()">Join the Club</button>
           <button onclick="showMemberDashboard()">Member Dashboard</button>
           <button onclick="showVolunteerCheckIn()">Volunteer Check-In</button>
+          <button onclick="showAdminDashboard()">Admin</button>
         </div>
       </div>
     </div>
   </header>
 
   <main class="page">
+
     <section id="register" class="card hidden">
-  <h2>Join the Club</h2>
-  <p>Create your runner profile and start earning Fist Bumps.</p>
+      <h2>Join the Club</h2>
+      <p>Create your runner profile and start earning Fist Bumps.</p>
 
-  <div class="form-grid">
-    <input id="firstName" placeholder="First Name *">
-    <input id="lastName" placeholder="Last Name *">
-    <input id="email" placeholder="Email *">
-    <input id="phone" placeholder="Phone">
-    <select id="shirtSize">
-      <option value="">Shirt Size</option>
-      <option>XS</option>
-      <option>S</option>
-      <option>M</option>
-      <option>L</option>
-      <option>XL</option>
-      <option>XXL</option>
-      <option>Prefer not to say</option>
-    </select>
-    <input id="emergencyName" placeholder="Emergency Contact Name">
-    <input id="emergencyPhone" placeholder="Emergency Contact Phone">
-  </div>
+      <div class="form-grid">
+        <input id="firstName" placeholder="First Name *">
+        <input id="lastName" placeholder="Last Name *">
+        <input id="email" placeholder="Email *">
+        <input id="phone" placeholder="Phone">
 
-  <h3>Liability Waiver</h3>
-  <div class="waiver">
-    By signing above, I warrant that I am an adult over eighteen (18) years of age and competent to execute this release and indemnity agreement. In consideration of participation in Run Club, I release and hold harmless Wilmington Brewing Company, LLC and/or Wilmington Homebrew Supply Corp., their respective officers, shareholders, members, managers, and employees from any and all liability, claims, and demands which may arise from my volunteer participation in Run Club.
-    <br><br>
-    This Agreement shall be construed and enforced under the laws of the State of North Carolina. The invalidity of any provision hereof shall not affect the validity of the remaining provisions.
-  </div>
+        <select id="shirtSize">
+          <option value="">Shirt Size</option>
+          <option>XS</option>
+          <option>S</option>
+          <option>M</option>
+          <option>L</option>
+          <option>XL</option>
+          <option>XXL</option>
+          <option>Prefer not to say</option>
+        </select>
 
-  <label class="check-row">
-    <input id="waiverAccepted" type="checkbox">
-    I have read and agree to the waiver above. *
-  </label>
+        <input id="emergencyName" placeholder="Emergency Contact Name">
+        <input id="emergencyPhone" placeholder="Emergency Contact Phone">
+      </div>
 
-  <button onclick="submitRegistration()">Register</button>
-  <p id="registrationMessage"></p>
-</section>
-<section id="memberDashboard" class="card hidden">
-  <h2>Member Dashboard</h2>
-  <p>Enter your Runner ID or email.</p>
+      <h3>Liability Waiver</h3>
+      <div class="waiver">
+        By signing above, I warrant that I am an adult over eighteen (18) years of age and competent to execute this release and indemnity agreement. In consideration of participation in Run Club, I release and hold harmless Wilmington Brewing Company, LLC and/or Wilmington Homebrew Supply Corp., their respective officers, shareholders, members, managers, and employees from any and all liability, claims, and demands which may arise from my volunteer participation in Run Club.
+        <br><br>
+        This Agreement shall be construed and enforced under the laws of the State of North Carolina. The invalidity of any provision hereof shall not affect the validity of the remaining provisions.
+      </div>
 
-  <input id="memberLookup" placeholder="WBRC-0001 or email address">
-  <button onclick="lookupMember()">Look Up</button>
+      <label class="check-row">
+        <input id="waiverAccepted" type="checkbox">
+        I have read and agree to the waiver above. *
+      </label>
 
-  <div id="memberDashboardResult"></div>
-</section>
-<section id="volunteerCheckIn" class="card hidden">
-  <h2>Volunteer Check-In</h2>
-  <p>Enter or scan a Runner ID to award one Fist Bump.</p>
+      <button onclick="submitRegistration()">Register</button>
+      <p id="registrationMessage"></p>
+    </section>
 
-  <input id="checkInRunnerId" placeholder="WBRC-0001">
-  <input id="checkInNotes" placeholder="Notes optional">
-  <button onclick="confirmCheckIn()">Confirm Check-In</button>
+    <section id="memberDashboard" class="card hidden">
+      <h2>Member Dashboard</h2>
+      <p>Enter your Runner ID or email.</p>
 
-  <div id="checkInResult"></div>
-</section>
+      <input id="memberLookup" placeholder="WBRC-0001 or email address">
+      <button onclick="lookupMember()">Look Up</button>
+
+      <div id="memberDashboardResult"></div>
+    </section>
+
+    <section id="volunteerCheckIn" class="card hidden">
+      <h2>Volunteer Check-In</h2>
+      <p>Enter or scan a Runner ID to award one Fist Bump.</p>
+
+      <input id="checkInRunnerId" placeholder="WBRC-0001">
+      <input id="checkInNotes" placeholder="Notes optional">
+      <button onclick="confirmCheckIn()">Confirm Check-In</button>
+
+      <div id="checkInResult"></div>
+    </section>
+
+    <section id="adminDashboard" class="card hidden">
+      <h2>Admin Dashboard</h2>
+      <p>Run club overview and management tools.</p>
+
+      <div class="admin-grid">
+        <div class="admin-stat">
+          <span>Total Members</span>
+          <strong id="adminTotalMembers">-</strong>
+        </div>
+
+        <div class="admin-stat">
+          <span>Total Check-Ins</span>
+          <strong id="adminTotalCheckIns">-</strong>
+        </div>
+
+        <div class="admin-stat">
+          <span>Total Fist Bumps</span>
+          <strong id="adminTotalFistBumps">-</strong>
+        </div>
+      </div>
+
+      <button onclick="loadAdminDashboard()">Refresh Admin Stats</button>
+      <div id="adminDashboardResult"></div>
+    </section>
+
     <section class="grid">
       <div class="card">
         <h2>How Fist Bumps Work</h2>
@@ -92,7 +124,7 @@
         <h2>Upcoming Run</h2>
         <p class="big">Tuesdays @ 6:30 PM</p>
         <p>📍 Wilmington Brewing Company</p>
-        <p>Stay afterward for beer, food, and community.</p>
+        <p>Stay afterward for beer, fun, and friends.</p>
       </div>
 
       <div class="card">
@@ -105,6 +137,10 @@
       </div>
     </section>
   </main>
+
+  <script>
+    window.CHECKIN_ID = '<?= typeof checkinId !== "undefined" ? checkinId : "" ?>';
+  </script>
 
   <?!= include('JavaScript'); ?>
 </body>

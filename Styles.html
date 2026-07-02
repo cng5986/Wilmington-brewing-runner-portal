@@ -185,6 +185,31 @@ button {
   height: 100%;
   border-radius: 999px;
 }
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin: 22px 0;
+}
+
+.admin-stat {
+  background: var(--maroon);
+  color: white;
+  border-radius: 18px;
+  padding: 22px;
+  text-align: center;
+}
+
+.admin-stat span {
+  display: block;
+  font-size: 14px;
+  opacity: .85;
+  margin-bottom: 8px;
+}
+
+.admin-stat strong {
+  font-size: 34px;
+}
 @media (max-width:800px) {
   h1 { font-size:48px; }
   .brand-badge { font-size:30px; }

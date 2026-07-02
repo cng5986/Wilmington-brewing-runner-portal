@@ -9,6 +9,17 @@ function showMemberDashboard() {
   document.getElementById('memberDashboard').scrollIntoView({ behavior: 'smooth' });
 }
 
+function showVolunteerCheckIn() {
+  document.getElementById('volunteerCheckIn').classList.remove('hidden');
+  document.getElementById('volunteerCheckIn').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showAdminDashboard() {
+  document.getElementById('adminDashboard').classList.remove('hidden');
+  document.getElementById('adminDashboard').scrollIntoView({ behavior: 'smooth' });
+  loadAdminDashboard();
+}
+
 function showComingSoon(name) {
   alert(name + ' is coming next.');
 }
@@ -65,28 +76,24 @@ function lookupMember() {
 
   google.script.run
     .withSuccessHandler(function(member) {
-     const nextReward = 5;
-const progress = Math.min((member.fistBumps / nextReward) * 100, 100);
+      const nextReward = 5;
+      const progress = Math.min((member.fistBumps / nextReward) * 100, 100);
 
-resultBox.innerHTML =
-  '<div class="member-card">' +
-    '<h3>' + member.firstName + ' ' + member.lastName + '</h3>' +
-    '<p class="runner-id">' + member.runnerId + '</p>' +
-    '<img class="qr" src="' + member.qrCodeUrl + '">' +
-    '<p><strong>👊 ' + member.fistBumps + ' Fist Bumps</strong></p>' +
-    '<div class="progress"><div style="width:' + progress + '%"></div></div>' +
-    '<p>' + member.fistBumps + ' / 5 to next reward</p>' +
-    '<p><strong>Next run:</strong><br>Tuesday • 6:30 PM<br>Wilmington Brewing Company</p>' +
-  '</div>';
+      resultBox.innerHTML =
+        '<div class="member-card">' +
+          '<h3>' + member.firstName + ' ' + member.lastName + '</h3>' +
+          '<p class="runner-id">' + member.runnerId + '</p>' +
+          '<img class="qr" src="' + member.qrCodeUrl + '">' +
+          '<p><strong>👊 ' + member.fistBumps + ' Fist Bumps</strong></p>' +
+          '<div class="progress"><div style="width:' + progress + '%"></div></div>' +
+          '<p>' + member.fistBumps + ' / 5 to next reward</p>' +
+          '<p><strong>Next run:</strong><br>Tuesday • 6:30 PM<br>Wilmington Brewing Company</p>' +
+        '</div>';
     })
     .withFailureHandler(function(error) {
       resultBox.innerHTML = '<p>' + error.message + '</p>';
     })
     .getMemberByLookup(lookup);
-}
-function showVolunteerCheckIn() {
-  document.getElementById('volunteerCheckIn').classList.remove('hidden');
-  document.getElementById('volunteerCheckIn').scrollIntoView({ behavior: 'smooth' });
 }
 
 function confirmCheckIn() {
@@ -133,4 +140,24 @@ function confirmCheckIn() {
     })
     .checkInMember(runnerId, notes);
 }
+
+function loadAdminDashboard() {
+  google.script.run
+    .withSuccessHandler(function(stats) {
+      document.getElementById('adminTotalMembers').textContent = stats.totalMembers;
+      document.getElementById('adminTotalCheckIns').textContent = stats.totalCheckIns;
+      document.getElementById('adminTotalFistBumps').textContent = stats.totalFistBumps;
+    })
+    .withFailureHandler(function(error) {
+      document.getElementById('adminDashboardResult').innerHTML = '<p>' + error.message + '</p>';
+    })
+    .getAdminStats();
+}
+
+window.addEventListener('load', function() {
+  if (window.CHECKIN_ID) {
+    showVolunteerCheckIn();
+    document.getElementById('checkInRunnerId').value = window.CHECKIN_ID;
+  }
+});
 </script>
