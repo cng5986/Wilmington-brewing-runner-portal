@@ -103,6 +103,18 @@ function confirmCheckIn() {
 
   google.script.run
     .withSuccessHandler(function(result) {
+      if (result.duplicate) {
+        resultBox.innerHTML =
+          '<div class="member-card">' +
+            '<h3>⚠️ Already Checked In</h3>' +
+            '<p><strong>' + result.firstName + ' ' + result.lastName + '</strong></p>' +
+            '<p class="runner-id">' + result.runnerId + '</p>' +
+            '<p>This runner has already checked in today.</p>' +
+            '<p><strong>👊 ' + result.currentTotal + ' Fist Bumps</strong></p>' +
+          '</div>';
+        return;
+      }
+
       resultBox.innerHTML =
         '<div class="member-card">' +
           '<h3>✅ Check-In Successful</h3>' +

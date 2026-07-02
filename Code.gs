@@ -177,6 +177,34 @@ function checkInMember(runnerIdInput, notes) {
     const runnerId = String(row[0]).trim().toLowerCase();
 
     if (runnerId === search) {
+      const today = new Date();
+      const todayKey = Utilities.formatDate(today, Session.getScriptTimeZone(), 'yyyy-MM-dd');
+
+      const attendanceRows = attendance.getDataRange().getValues();
+
+      for (let j = 1; j < attendanceRows.length; j++) {
+        const attendanceDate = attendanceRows[j][0];
+        const attendanceRunnerId = String(attendanceRows[j][2]).trim().toLowerCase();
+
+        if (attendanceDate && attendanceRunnerId === search) {
+          const attendanceKey = Utilities.formatDate(
+            new Date(attendanceDate),
+            Session.getScriptTimeZone(),
+            'yyyy-MM-dd'
+          );
+
+          if (attendanceKey === todayKey) {
+            return {
+              duplicate: true,
+              runnerId: row[0],
+              firstName: row[1],
+              lastName: row[2],
+              currentTotal: row[11] || 0
+            };
+          }
+        }
+      }
+
       const oldTotal = Number(row[11]) || 0;
       const newTotal = oldTotal + 1;
 
@@ -195,6 +223,7 @@ function checkInMember(runnerIdInput, notes) {
       ]);
 
       return {
+        duplicate: false,
         runnerId: row[0],
         firstName: row[1],
         lastName: row[2],
