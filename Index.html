@@ -15,7 +15,7 @@
 
         <div class="hero-actions">
           <button onclick="showRegister()">Join the Club</button>
-          <button onclick="showComingSoon('Member Dashboard')">Member Dashboard</button>
+          <button onclick="showMemberDashboard()">Member Dashboard</button>
           <button onclick="showComingSoon('Volunteer Check-In')">Volunteer Check-In</button>
         </div>
       </div>
@@ -60,6 +60,15 @@
 
   <button onclick="submitRegistration()">Register</button>
   <p id="registrationMessage"></p>
+</section>
+<section id="memberDashboard" class="card hidden">
+  <h2>Member Dashboard</h2>
+  <p>Enter your Runner ID or email.</p>
+
+  <input id="memberLookup" placeholder="WBRC-0001 or email address">
+  <button onclick="lookupMember()">Look Up</button>
+
+  <div id="memberDashboardResult"></div>
 </section>
 
     <section class="grid">

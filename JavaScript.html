@@ -4,6 +4,11 @@ function showRegister() {
   document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
 }
 
+function showMemberDashboard() {
+  document.getElementById('memberDashboard').classList.remove('hidden');
+  document.getElementById('memberDashboard').scrollIntoView({ behavior: 'smooth' });
+}
+
 function showComingSoon(name) {
   alert(name + ' is coming next.');
 }
@@ -45,5 +50,38 @@ function submitRegistration() {
       msg.textContent = error.message;
     })
     .registerMember(data);
+}
+
+function lookupMember() {
+  const lookup = document.getElementById('memberLookup').value.trim();
+  const resultBox = document.getElementById('memberDashboardResult');
+
+  if (!lookup) {
+    resultBox.innerHTML = '<p>Please enter your Runner ID or email.</p>';
+    return;
+  }
+
+  resultBox.innerHTML = '<p>Looking up member...</p>';
+
+  google.script.run
+    .withSuccessHandler(function(member) {
+     const nextReward = 5;
+const progress = Math.min((member.fistBumps / nextReward) * 100, 100);
+
+resultBox.innerHTML =
+  '<div class="member-card">' +
+    '<h3>' + member.firstName + ' ' + member.lastName + '</h3>' +
+    '<p class="runner-id">' + member.runnerId + '</p>' +
+    '<img class="qr" src="' + member.qrCodeUrl + '">' +
+    '<p><strong>👊 ' + member.fistBumps + ' Fist Bumps</strong></p>' +
+    '<div class="progress"><div style="width:' + progress + '%"></div></div>' +
+    '<p>' + member.fistBumps + ' / 5 to next reward</p>' +
+    '<p><strong>Next run:</strong><br>Tuesday • 6:30 PM<br>Wilmington Brewing Company</p>' +
+  '</div>';
+    })
+    .withFailureHandler(function(error) {
+      resultBox.innerHTML = '<p>' + error.message + '</p>';
+    })
+    .getMemberByLookup(lookup);
 }
 </script>
