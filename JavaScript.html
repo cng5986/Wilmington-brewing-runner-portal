@@ -14,14 +14,38 @@ function showVolunteerCheckIn() {
   document.getElementById('volunteerCheckIn').scrollIntoView({ behavior: 'smooth' });
 }
 
-function showAdminDashboard() {
-  document.getElementById('adminDashboard').classList.remove('hidden');
-  document.getElementById('adminDashboard').scrollIntoView({ behavior: 'smooth' });
-  loadAdminDashboard();
+function showAdminLogin() {
+  document.getElementById('adminLogin').classList.remove('hidden');
+  document.getElementById('adminLogin').scrollIntoView({ behavior: 'smooth' });
 }
 
-function showComingSoon(name) {
-  alert(name + ' is coming next.');
+function adminLogin() {
+  const password = document.getElementById('adminPassword').value;
+  const result = document.getElementById('adminLoginResult');
+
+  result.innerHTML = '<p>Checking access...</p>';
+
+  google.script.run
+    .withSuccessHandler(function(response) {
+      if (!response.allowed) {
+        result.innerHTML = '<p>Incorrect password.</p>';
+        return;
+      }
+
+      document.getElementById('adminLogin').classList.add('hidden');
+      document.getElementById('adminDashboard').classList.remove('hidden');
+      loadAdminDashboard();
+    })
+    .withFailureHandler(function(error) {
+      result.innerHTML = '<p>' + error.message + '</p>';
+    })
+    .verifyAdminPassword(password);
+}
+
+function adminLogout() {
+  document.getElementById('adminDashboard').classList.add('hidden');
+  document.getElementById('adminPassword').value = '';
+  document.getElementById('adminLogin').classList.remove('hidden');
 }
 
 function submitRegistration() {

@@ -283,10 +283,23 @@ function getAdminStats() {
       return sum + (Number(row[0]) || 0);
     }, 0);
   }
+const ADMIN_PASSWORD = 'wbrc-admin';
 
+function verifyAdminPassword(password) {
+  return {
+    allowed: password === ADMIN_PASSWORD
+  };
+}
   return {
     totalMembers,
     totalCheckIns,
     totalFistBumps
   };
+}
+function verifyAdminPassword(password) {
+  if (String(password).trim() === 'wbrc-admin') {
+    return { allowed: true };
+  }
+
+  return { allowed: false };
 }
