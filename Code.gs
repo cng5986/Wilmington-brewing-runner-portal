@@ -164,3 +164,45 @@ function getMemberByLookup(lookup) {
 
   throw new Error('No member found. Check the Runner ID or email.');
 }
+function checkInMember(runnerIdInput, notes) {
+  const ss = getDatabase_();
+  const members = ss.getSheetByName('Members');
+  const attendance = ss.getSheetByName('Attendance');
+
+  const rows = members.getDataRange().getValues();
+  const search = String(runnerIdInput).trim().toLowerCase();
+
+  for (let i = 1; i < rows.length; i++) {
+    const row = rows[i];
+    const runnerId = String(row[0]).trim().toLowerCase();
+
+    if (runnerId === search) {
+      const oldTotal = Number(row[11]) || 0;
+      const newTotal = oldTotal + 1;
+
+      members.getRange(i + 1, 12).setValue(newTotal);
+
+      attendance.appendRow([
+        new Date(),
+        'Weekly Run',
+        row[0],
+        row[1],
+        row[2],
+        1,
+        Session.getActiveUser().getEmail() || 'Volunteer',
+        'No',
+        notes || ''
+      ]);
+
+      return {
+        runnerId: row[0],
+        firstName: row[1],
+        lastName: row[2],
+        oldTotal,
+        newTotal
+      };
+    }
+  }
+
+  throw new Error('Runner ID not found.');
+}

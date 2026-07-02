@@ -84,4 +84,41 @@ resultBox.innerHTML =
     })
     .getMemberByLookup(lookup);
 }
+function showVolunteerCheckIn() {
+  document.getElementById('volunteerCheckIn').classList.remove('hidden');
+  document.getElementById('volunteerCheckIn').scrollIntoView({ behavior: 'smooth' });
+}
+
+function confirmCheckIn() {
+  const runnerId = document.getElementById('checkInRunnerId').value.trim();
+  const notes = document.getElementById('checkInNotes').value.trim();
+  const resultBox = document.getElementById('checkInResult');
+
+  if (!runnerId) {
+    resultBox.innerHTML = '<p>Please enter a Runner ID.</p>';
+    return;
+  }
+
+  resultBox.innerHTML = '<p>Checking in runner...</p>';
+
+  google.script.run
+    .withSuccessHandler(function(result) {
+      resultBox.innerHTML =
+        '<div class="member-card">' +
+          '<h3>✅ Check-In Successful</h3>' +
+          '<p><strong>' + result.firstName + ' ' + result.lastName + '</strong></p>' +
+          '<p class="runner-id">' + result.runnerId + '</p>' +
+          '<p>👊 Fist Bumps</p>' +
+          '<p><strong>' + result.oldTotal + ' → ' + result.newTotal + '</strong></p>' +
+          '<p>See you next Tuesday!</p>' +
+        '</div>';
+
+      document.getElementById('checkInRunnerId').value = '';
+      document.getElementById('checkInNotes').value = '';
+    })
+    .withFailureHandler(function(error) {
+      resultBox.innerHTML = '<p>' + error.message + '</p>';
+    })
+    .checkInMember(runnerId, notes);
+}
 </script>

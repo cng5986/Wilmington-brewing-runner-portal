@@ -16,7 +16,7 @@
         <div class="hero-actions">
           <button onclick="showRegister()">Join the Club</button>
           <button onclick="showMemberDashboard()">Member Dashboard</button>
-          <button onclick="showComingSoon('Volunteer Check-In')">Volunteer Check-In</button>
+          <button onclick="showVolunteerCheckIn()">Volunteer Check-In</button>
         </div>
       </div>
     </div>
@@ -70,7 +70,16 @@
 
   <div id="memberDashboardResult"></div>
 </section>
+<section id="volunteerCheckIn" class="card hidden">
+  <h2>Volunteer Check-In</h2>
+  <p>Enter or scan a Runner ID to award one Fist Bump.</p>
 
+  <input id="checkInRunnerId" placeholder="WBRC-0001">
+  <input id="checkInNotes" placeholder="Notes optional">
+  <button onclick="confirmCheckIn()">Confirm Check-In</button>
+
+  <div id="checkInResult"></div>
+</section>
     <section class="grid">
       <div class="card">
         <h2>How Fist Bumps Work</h2>
