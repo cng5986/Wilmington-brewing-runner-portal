@@ -1,5 +1,49 @@
 <script>
 function showRegister() {
   document.getElementById('register').classList.remove('hidden');
+  document.getElementById('register').scrollIntoView({ behavior: 'smooth' });
+}
+
+function showComingSoon(name) {
+  alert(name + ' is coming next.');
+}
+
+function submitRegistration() {
+  const data = {
+    firstName: document.getElementById('firstName').value.trim(),
+    lastName: document.getElementById('lastName').value.trim(),
+    email: document.getElementById('email').value.trim(),
+    phone: document.getElementById('phone').value.trim(),
+    shirtSize: document.getElementById('shirtSize').value,
+    emergencyName: document.getElementById('emergencyName').value.trim(),
+    emergencyPhone: document.getElementById('emergencyPhone').value.trim(),
+    waiverAccepted: document.getElementById('waiverAccepted').checked
+  };
+
+  const msg = document.getElementById('registrationMessage');
+
+  if (!data.firstName || !data.lastName || !data.email || !data.waiverAccepted) {
+    msg.textContent = 'Please complete first name, last name, email, and accept the waiver.';
+    return;
+  }
+
+  msg.textContent = 'Registering...';
+
+  google.script.run
+    .withSuccessHandler(function(result) {
+      msg.innerHTML =
+        '<div class="member-card">' +
+          '<h3>Welcome to the Run Club</h3>' +
+          '<p class="runner-id">' + result.runnerId + '</p>' +
+          '<p>Save this QR code and bring it to every run.</p>' +
+          '<img class="qr" src="' + result.qrCodeUrl + '">' +
+          '<p><strong>👊 0 Fist Bumps</strong></p>' +
+          '<p>Next reward: TBD</p>' +
+        '</div>';
+    })
+    .withFailureHandler(function(error) {
+      msg.textContent = error.message;
+    })
+    .registerMember(data);
 }
 </script>

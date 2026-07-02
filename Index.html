@@ -1,81 +1,93 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
   <base target="_top">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <?!= include('Styles'); ?>
 </head>
+
 <body>
-  <header>
-    <div class="brand">
-      <div class="badge">WB</div>
-      <div>
-        <h1>Wilmington Brewing Runner Portal</h1>
-        <p>Wilmington Brewing Co. Run Club</p>
+  <header class="hero">
+    <div class="hero-overlay">
+      <div class="hero-content">
+        <div class="brand-badge">Wilmington Brewing Co.</div>
+        <h1>Run Club</h1>
+        <p class="tagline">Run • Walk • Jog • Hang Out • Earn Fist Bumps</p>
+
+        <div class="hero-actions">
+          <button onclick="showRegister()">Join the Club</button>
+          <button onclick="showComingSoon('Member Dashboard')">Member Dashboard</button>
+          <button onclick="showComingSoon('Volunteer Check-In')">Volunteer Check-In</button>
+        </div>
       </div>
     </div>
-    <nav>
-      <button onclick="showPage('register')">Register</button>
-      <button onclick="showPage('member')">Member</button>
-      <button onclick="showPage('volunteer')">Volunteer</button>
-      <button onclick="showPage('admin')">Admin</button>
-    </nav>
   </header>
 
-  <main>
-    <section id="home" class="card page active">
-      <h2>Earn Fist Bumps every time you run.</h2>
-      <p>Register once, get your personal QR code, and have a volunteer scan it at each run.</p>
-      <button class="primary" onclick="showPage('register')">Join the Run Club</button>
-    </section>
+  <main class="page">
+    <section id="register" class="card hidden">
+  <h2>Join the Club</h2>
+  <p>Create your runner profile and start earning Fist Bumps.</p>
 
-    <section id="register" class="card page">
-      <h2>Member Registration</h2>
-      <form id="registerForm">
-        <div class="grid two">
-          <label>First Name<input name="firstName" required></label>
-          <label>Last Name<input name="lastName" required></label>
-          <label>Email<input name="email" type="email" required></label>
-          <label>Phone<input name="phone"></label>
-          <label>Shirt Size<select name="shirtSize"><option></option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option><option>Prefer not to say</option></select></label>
-          <label>Emergency Contact Name<input name="emergencyName"></label>
-          <label>Emergency Contact Phone<input name="emergencyPhone"></label>
-        </div>
-        <div class="waiver" id="waiverText">Loading waiver...</div>
-        <label class="check"><input type="checkbox" name="waiverAccepted" required> I have read and agree to the waiver above.</label>
-        <button class="primary" type="submit">Register</button>
-      </form>
-      <div id="registerResult"></div>
-    </section>
+  <div class="form-grid">
+    <input id="firstName" placeholder="First Name *">
+    <input id="lastName" placeholder="Last Name *">
+    <input id="email" placeholder="Email *">
+    <input id="phone" placeholder="Phone">
+    <select id="shirtSize">
+      <option value="">Shirt Size</option>
+      <option>XS</option>
+      <option>S</option>
+      <option>M</option>
+      <option>L</option>
+      <option>XL</option>
+      <option>XXL</option>
+      <option>Prefer not to say</option>
+    </select>
+    <input id="emergencyName" placeholder="Emergency Contact Name">
+    <input id="emergencyPhone" placeholder="Emergency Contact Phone">
+  </div>
 
-    <section id="member" class="card page">
-      <h2>Member Dashboard</h2>
-      <label>Runner ID or Email<input id="memberLookup" placeholder="WBRC-0001"></label>
-      <button class="primary" onclick="lookup()">Look Up</button>
-      <div id="memberResult"></div>
-    </section>
+  <h3>Liability Waiver</h3>
+  <div class="waiver">
+    By signing above, I warrant that I am an adult over eighteen (18) years of age and competent to execute this release and indemnity agreement. In consideration of participation in Run Club, I release and hold harmless Wilmington Brewing Company, LLC and/or Wilmington Homebrew Supply Corp., their respective officers, shareholders, members, managers, and employees from any and all liability, claims, and demands which may arise from my volunteer participation in Run Club.
+    <br><br>
+    This Agreement shall be construed and enforced under the laws of the State of North Carolina. The invalidity of any provision hereof shall not affect the validity of the remaining provisions.
+  </div>
 
-    <section id="volunteer" class="card page">
-      <h2>Volunteer Check-In</h2>
-      <p>Scan the runner QR code, or type the Runner ID below.</p>
-      <label>Runner ID<input id="checkRunnerId" placeholder="WBRC-0001"></label>
-      <label>Notes<input id="checkNotes"></label>
-      <button class="primary" onclick="checkIn()">Confirm Check-In</button>
-      <div id="checkResult"></div>
-    </section>
+  <label class="check-row">
+    <input id="waiverAccepted" type="checkbox">
+    I have read and agree to the waiver above. *
+  </label>
 
-    <section id="admin" class="card page">
-      <h2>Admin</h2>
-      <div class="grid two">
-        <label>Event Name<input id="eventName" value="Weekly Run"></label>
-        <label>Location<input id="eventLocation" value="Wilmington Brewing Company"></label>
+  <button onclick="submitRegistration()">Register</button>
+  <p id="registrationMessage"></p>
+</section>
+
+    <section class="grid">
+      <div class="card">
+        <h2>How Fist Bumps Work</h2>
+        <p><strong>1. Join the club</strong><br>Create your profile and accept the waiver.</p>
+        <p><strong>2. Show up</strong><br>Run, walk, jog, hang out.</p>
+        <p><strong>3. Earn Fist Bumps</strong><br>Get rewarded for attending.</p>
       </div>
-      <label>Notes<input id="eventNotes"></label>
-      <button class="primary" onclick="createEvent()">Create Active Event</button>
-      <button onclick="loadStats()">Refresh Stats</button>
-      <div id="adminResult"></div>
+
+      <div class="card">
+        <h2>Upcoming Run</h2>
+        <p class="big">Tuesdays @ 6:30 PM</p>
+        <p>📍 Wilmington Brewing Company</p>
+        <p>Stay afterward for beer, food, and community.</p>
+      </div>
+
+      <div class="card">
+        <h2>Fist Bump Rewards</h2>
+        <div class="reward"><span>👊 5</span><span>TBD</span></div>
+        <div class="reward"><span>👊 10</span><span>TBD</span></div>
+        <div class="reward"><span>👊 20</span><span>TBD</span></div>
+        <div class="reward"><span>👊 35</span><span>TBD</span></div>
+        <div class="reward"><span>👊 50</span><span>TBD</span></div>
+      </div>
     </section>
   </main>
+
   <?!= include('JavaScript'); ?>
 </body>
 </html>

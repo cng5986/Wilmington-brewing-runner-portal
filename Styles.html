@@ -1,38 +1,181 @@
 <style>
+:root {
+  --maroon:#7a263a;
+  --snow:#f7f5f0;
+  --charcoal:#262626;
+}
+
 body {
-  margin: 0;
+  margin:0;
   font-family: Arial, sans-serif;
-  background: #f7f5f0;
-  color: #2f2f2f;
+  background:var(--snow);
+  color:var(--charcoal);
 }
 
-.page {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 32px 16px;
+.hero {
+  min-height:520px;
+  background:
+    linear-gradient(90deg, rgba(0,0,0,.72), rgba(0,0,0,.25)),
+    url("https://raw.githubusercontent.com/cng5986/Wilmington-brewing-runner-portal/main/assets/hero.jpg");
+  background-size:cover;
+  background-position:center;
 }
 
-.card {
-  background: white;
-  border-radius: 18px;
-  padding: 28px;
-  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+.hero-overlay {
+  min-height:520px;
+  display:flex;
+  align-items:center;
+  padding:40px;
 }
 
-h1, h2 {
-  color: #7a263a;
+.hero-content {
+  max-width:760px;
+  color:white;
+}
+
+.brand-badge {
+  font-size:42px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:2px;
+}
+
+h1 {
+  font-size:74px;
+  margin:8px 0;
+  color:white;
+}
+
+.tagline {
+  font-size:22px;
+  letter-spacing:3px;
+  text-transform:uppercase;
+}
+
+.hero-actions {
+  display:flex;
+  gap:16px;
+  flex-wrap:wrap;
+  margin-top:28px;
 }
 
 button {
-  background: #7a263a;
-  color: white;
-  border: 0;
-  border-radius: 999px;
-  padding: 12px 18px;
-  cursor: pointer;
+  background:var(--maroon);
+  color:white;
+  border:0;
+  border-radius:14px;
+  padding:16px 24px;
+  font-size:16px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.page {
+  max-width:1200px;
+  margin:-40px auto 0;
+  padding:0 24px 48px;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:24px;
+}
+
+.card {
+  background:white;
+  border-radius:18px;
+  padding:28px;
+  box-shadow:0 10px 28px rgba(0,0,0,.09);
+}
+
+.card h2 {
+  color:var(--maroon);
+  text-transform:uppercase;
+}
+
+.big {
+  font-size:26px;
+  font-weight:800;
+}
+
+.reward {
+  display:flex;
+  justify-content:space-between;
+  border-bottom:1px solid #ddd;
+  padding:14px 0;
+  font-size:22px;
 }
 
 .hidden {
-  display: none;
+  display:none;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin: 20px 0;
+}
+
+.form-grid input,
+.form-grid select {
+  padding: 14px;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  font-size: 15px;
+}
+
+.waiver {
+  max-height: 180px;
+  overflow-y: auto;
+  background: #f7f5f0;
+  border-radius: 14px;
+  padding: 16px;
+  margin: 12px 0;
+  line-height: 1.45;
+  font-size: 14px;
+}
+
+.check-row {
+  display: block;
+  margin: 18px 0;
+  font-weight: 700;
+}
+
+#registrationMessage {
+  font-weight: 700;
+  color: var(--maroon);
+}
+.member-card {
+  margin-top: 24px;
+  background: var(--maroon);
+  color: white;
+  padding: 28px;
+  border-radius: 20px;
+  text-align: center;
+  max-width: 360px;
+}
+
+.member-card h3 {
+  margin-top: 0;
+}
+
+.runner-id {
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 1px;
+}
+
+.qr {
+  background: white;
+  padding: 12px;
+  border-radius: 14px;
+  width: 220px;
+}
+@media (max-width:800px) {
+  h1 { font-size:48px; }
+  .brand-badge { font-size:30px; }
+  .grid { grid-template-columns:1fr; }
+  .hero-overlay { padding:24px; }
 }
 </style>
